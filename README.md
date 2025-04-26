@@ -1,2 +1,2 @@
 # Programaci-n-III-TPI
-Sistema de reserva para gimnasio
+Sistema de Reserva para Gimnasio
