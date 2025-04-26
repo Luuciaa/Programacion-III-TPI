@@ -5,20 +5,22 @@ La herramienta permite a socios, profesores y administradores interactuar de for
 
 # ⚙️ Funcionalidades principales
 
-👤 Gestión de Socios #
-#Editá el perfil.
-#Consultá el estado de la cuota.
-#Recibí notificaciones personalizadas.
+ 🧑‍💼 Gestión de Socios:
+  - Editá el perfil.
+  - Consultá el estado de la cuota.
+  - Recibe las notificaciones personalizadas.
 
- 📅 Actividades y Clases
-Explorá la lista de clases disponibles, filtrá por día u horario y elegí las que mejor se adapten a tu rutina.
+ 📅 Actividades y Clases:
+  - Explorá la lista de clases disponibles.
+  - Filtrá por día u horario.
+  - Elegí la clase que mejor se adapten a su rutina.
 
-✅ Reservas de Clases
-Reservá tu lugar en clases de forma rápida (si tu cuota está al día), cancelá con anticipación y llevá el historial de tus asistencias.
+ ✅ Reservas de Clases:
+   - Reservá el lugar de clases de forma rápida (si la cuota está al día).
+   - Cancelá con anticipación.
+   - Llevá el historial de las asistencias.
 
-# 🎯 Objetivo del proyecto
-El Sistema Web de Gimnasio tiene como objetivo digitalizar y optimizar la gestión de socios, actividades y reservas dentro de un gimnasio.
-A través de una plataforma intuitiva y eficiente, busca mejorar la experiencia de los usuarios y facilitar el trabajo administrativo de profesores y dueños del establecimiento.
+
 
 # **Frontend:**
 [![My Skills](https://skillicons.dev/icons?i=html,css,javascript,react,bootsrap)](https://skillicons.dev)
