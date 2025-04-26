@@ -23,7 +23,7 @@ La herramienta permite a socios, profesores y administradores interactuar de for
 
 
 # **Frontend:**
-[![My Skills](https://skillicons.dev/icons?i=html,css,javascript,react,bootstrap&perline=4)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=html,css,javascript,react,bootstrap&perline=3)](https://skillicons.dev)
 
 # **Backend:**
 [![My Skills](https://skillicons.dev/icons?i=nodejs,sqlite)](https://skillicons.dev)
