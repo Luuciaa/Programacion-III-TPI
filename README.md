@@ -5,13 +5,13 @@ La herramienta permite a socios, profesores y administradores interactuar de for
 
 # ⚙️ Funcionalidades principales
 
-# 👤 Gestión de Socios
+👤 Gestión de Socios
 Editá tu perfil, consultá el estado de tu cuota y recibí notificaciones personalizadas.
 
-# 📅 Actividades y Clases
+ 📅 Actividades y Clases
 Explorá la lista de clases disponibles, filtrá por día u horario y elegí las que mejor se adapten a tu rutina.
 
-# ✅ Reservas de Clases
+✅ Reservas de Clases
 Reservá tu lugar en clases de forma rápida (si tu cuota está al día), cancelá con anticipación y llevá el historial de tus asistencias.
 
 # 🎯 Objetivo del proyecto
