@@ -5,8 +5,10 @@ La herramienta permite a socios, profesores y administradores interactuar de for
 
 # ⚙️ Funcionalidades principales
 
-👤 Gestión de Socios
-Editá tu perfil, consultá el estado de tu cuota y recibí notificaciones personalizadas.
+👤 Gestión de Socios #
+#Editá el perfil.
+#Consultá el estado de la cuota.
+#Recibí notificaciones personalizadas.
 
  📅 Actividades y Clases
 Explorá la lista de clases disponibles, filtrá por día u horario y elegí las que mejor se adapten a tu rutina.
