@@ -1,12 +1,11 @@
 # 🏋️ Sistema Web de Gimnasio
 
-**Descripción**
-Es una plataforma digital diseñada para facilitar la gestión de clases, reservas, cuotas y usuarios dentro del gimnasio.
+Sistema Web de Gimnasio Es una plataforma digital diseñada para facilitar la gestión de clases, reservas, cuotas y usuarios dentro del gimnasio.
 La herramienta permite a socios, profesores y administradores interactuar de forma sencilla y organizada.
 
-**Frontend:**
+# **Frontend:**
 [![My Skills](https://skillicons.dev/icons?i=html,css,javascript,react,bootsrap)](https://skillicons.dev)
 
-**Backend:**
+# **Backend:**
 [![My Skills](https://skillicons.dev/icons?i=nodejs,sqlite)](https://skillicons.dev)
 
