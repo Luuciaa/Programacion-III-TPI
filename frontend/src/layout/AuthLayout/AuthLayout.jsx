@@ -17,8 +17,4 @@ const AuthLayout = ({ allowedRoles }) => {
 
 export default AuthLayout;
 
-/*useAuth(): Obtiene el estado de autenticación desde tu contexto personalizado.
 
-Logeado: Si es false, redirige automáticamente al usuario a la página de login.
-
-Outlet: Renderiza las rutas hijas protegidas si el usuario está autenticado.*/

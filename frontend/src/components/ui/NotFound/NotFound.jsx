@@ -5,18 +5,17 @@ import useAuth from "../../../context/hooks/useAuth";
 
 const NotFound = () => {
   const navigate = useNavigate();
-  const { logeado } = useAuth(); // Se usa logeado para verificar si el usuario está autenticado.
-
+  const { logeado } = useAuth(); 
   const goBackHomeHandler = () => {
     if (logeado) {
-      navigate("/dashboard"); // Si está logueado, lo mandamos al dashboard
+      navigate("/dashboard"); 
     } else {
-      navigate("/home"); // Si no está logueado, lo mandamos al home
+      navigate("/home"); 
     }
   };
 
   const goBackLoginHandler = () => {
-    navigate("/login"); // Si el usuario no tiene acceso a ninguna parte, redirige a login
+    navigate("/login"); 
   };
 
   return (

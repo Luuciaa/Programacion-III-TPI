@@ -3,16 +3,16 @@ import { createContext, useState } from "react";
 // Creo el contexto
 const AuthContext = createContext();
 
-// Creo el provider que envuelve la app
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Info del usuario logueado
-  const [logeado, setLogeado] = useState(false); // Estado global de login
 
-  // Función para cerrar sesión
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null); 
+  const [logeado, setLogeado] = useState(false); 
+
+  
   const logout = () => {
     setUser(null);
     setLogeado(false);
-    localStorage.removeItem("token"); // Si usás token
+    localStorage.removeItem("token"); 
   };
 
   return (
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
         setUser,
         logeado,
         setLogeado,
-        logout, // ✅ ahora disponible en cualquier parte de la app
+        logout,
       }}
     >
       {children}
