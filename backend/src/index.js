@@ -7,9 +7,9 @@ import userRoutes from "./routes/userRoutes.js";
 import activityRoutes from "./routes/activityRoutes.js";
 import reservationRoutes from "./routes/reservationRoutes.js";
 
-import "./models/User.js";
-import "./models/Actividad.js";
-import "./models/ReservaDeTurno.js";
+import "./models/user.js";
+import "./models/activity.js";
+import "./models/reservation.js";
 
 dotenv.config();
 
