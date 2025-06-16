@@ -6,6 +6,10 @@ import { sequelize } from "./db.js";
 import userRoutes from "./routes/userRoutes.js";
 import activityRoutes from "./routes/activityRoutes.js";
 import reservationRoutes from "./routes/reservationRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+
+
+
 
 import "./models/user.js";
 import "./models/activity.js";
@@ -30,6 +34,7 @@ try {
   app.use("/api/usuarios", userRoutes);
   app.use("/api/actividades", activityRoutes);
   app.use("/api/reservas", reservationRoutes);
+  app.use("/api/auth", authRoutes);
 
   // Sincronizar base de datos
   await sequelize.sync();

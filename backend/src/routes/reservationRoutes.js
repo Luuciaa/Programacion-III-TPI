@@ -11,13 +11,18 @@ import { verifyToken, isAdmin, isSuperAdmin } from "../middleware/authMiddleware
 
 const router = Router();
 
-// Socios pueden ver y crear reservas, pero sólo admins pueden borrar
-router.get("/", verifyToken, getAllReservas);
-router.get("/:id", verifyToken, getReservaById);
 
-router.post("/", verifyToken, createReserva);
+router.use(verifyToken);
 
-router.put("/:id", verifyToken, isAdmin, updateReserva);
-router.delete("/:id", verifyToken, isSuperAdmin, deleteReserva);
+// Socios pueden ver y crear reservas
+router.get("/", getAllReservas);
+router.get("/:id", getReservaById);
+router.post("/", createReserva);
+
+// Solo admins pueden modificar reservas
+router.put("/:id", isAdmin, updateReserva);
+
+// Solo superadmins pueden borrar reservas
+router.delete("/:id", isSuperAdmin, deleteReserva);
 
 export default router;

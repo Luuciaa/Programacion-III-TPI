@@ -1,7 +1,5 @@
 import { Router } from "express";
 
-// Servicios de autenticación - // Authentication services
-import { loginUser, registerUser } from "../services/auth.services.js";
 
 // Servicios del usuario - // User Services
 import {
@@ -21,26 +19,19 @@ import {
 
 const router = Router();
 
-// Public routes
-router.post("/register", registerUser);   // Membership registration
-router.post("/login", loginUser);         // Login
 
-// Rutas protegidas con token - //Token-protected routes
+router.use(verifyToken);
 
-// Ver todos los usuarios (solo Admin o SuperAdmin)
-router.get("/", verifyToken, isAdmin, getAllUsers);
 
-// Ver perfil propio o usuario por ID - // View own profile or user by ID
-router.get("/:id", verifyToken, getUserById);
+router.get("/", isAdmin, getAllUsers);
 
-// Actualizar perfil - //Update profile
-router.put("/:id", verifyToken, updateUser);
+router.get("/:id", getUserById);
 
-// Eliminar usuario (solo SuperAdmin) - // Delete user (SuperAdmin only)
-router.delete("/:id", verifyToken, isSuperAdmin, deleteUser);
+router.put("/:id", updateUser);
 
-// Cambiar rol (solo SuperAdmin) - // Change role (SuperAdmin only)
-router.patch("/:id/rol", verifyToken, isSuperAdmin, changeUserRole);
+router.delete("/:id", isSuperAdmin, deleteUser);
+
+router.patch("/:id/rol", isSuperAdmin, changeUserRole);
 
 export default router;
 

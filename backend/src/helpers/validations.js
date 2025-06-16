@@ -24,8 +24,8 @@ export const validatePassword = (password) => {
 };
 
 // Validación para registro de usuario
-export const validateRegisterUser = (req) => {
-  const { name, email, password } = req;
+export const validateRegisterUser = (data = {}) => {
+  const { name, email, password } = data;
   if (!name || !validateString(name, 8, null)) {
     return { error: true, message: "Nombre inválido" };
   }
@@ -39,8 +39,8 @@ export const validateRegisterUser = (req) => {
 };
 
 // Validación para login de usuario
-export const validateLoginUser = (req) => {
-  const { email, password } = req;
+export const validateLoginUser = (data = {}) => {
+  const { email, password } = data;
   if (!email || !validateEmail(email)) {
     return { error: true, message: "Email inválido" };
   }

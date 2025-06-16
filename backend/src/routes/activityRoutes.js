@@ -11,13 +11,18 @@ import { verifyToken, isAdmin, isSuperAdmin } from "../middleware/authMiddleware
 
 const router = Router();
 
-// Rutas públicas o protegidas según tu lógica
-router.get("/", verifyToken, getAllActividades);
-router.get("/:id", verifyToken, getActividadById);
 
-// Solo Admin o SuperAdmin pueden modificar actividades
-router.post("/", verifyToken, isAdmin, createActividad);
-router.put("/:id", verifyToken, isAdmin, updateActividad);
-router.delete("/:id", verifyToken, isSuperAdmin, deleteActividad);
+router.use(verifyToken);
+
+// Rutas accesibles para cualquier usuario autenticado
+router.get("/", getAllActividades);
+router.get("/:id", getActividadById);
+
+// Rutas que requieren rol Admin o SuperAdmin
+router.post("/", isAdmin, createActividad);
+router.put("/:id", isAdmin, updateActividad);
+router.delete("/:id", isSuperAdmin, deleteActividad);
+
+
 
 export default router;

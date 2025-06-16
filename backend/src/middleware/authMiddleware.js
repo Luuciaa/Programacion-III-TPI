@@ -19,6 +19,19 @@ export const verifyToken = (req, res, next) => {
   }
 };
 
+export const checkRole = (rolPermitido) => {
+  return (req, res, next) => {
+    if (!req.user) return res.status(401).json({ message: "No autenticado" });
+
+    if (req.user.rol !== rolPermitido) {
+      return res.status(403).json({ message: "Acceso denegado" });
+    }
+
+    next();
+  };
+};
+
+
 // Middleware: Solo Admin o SuperAdmin
 export const isAdmin = (req, res, next) => {
   const { rol } = req.user;

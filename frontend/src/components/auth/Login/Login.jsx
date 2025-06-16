@@ -79,7 +79,7 @@ const Login = () => {
     setErrors({ email: false, password: false, area: false });
 
     try {
-      const res = await fetch("http://localhost:3000/login", {
+      const res = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, area }),
@@ -105,7 +105,7 @@ const Login = () => {
           navigate("/superadmin");
         } else if (rol === "admin") {
           navigate("/admin");
-        } else if (rol === "usuario") {
+        } else if (rol === "socio") {
           navigate("/usuario");
         } else {
           toast.error("Rol no reconocido");

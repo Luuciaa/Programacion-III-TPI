@@ -10,8 +10,8 @@ const RegistroForm = () => {
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    nombre:"",
-    correo: "",
+    nombre: "",
+    email: "",
     password: "",
   });
 
@@ -27,39 +27,43 @@ const RegistroForm = () => {
 
     if (!form.checkValidity()) {
       setValidated(true);
-      toast.error("Por favor completarlos")
+      toast.error("Por favor completalos correctamente")
       return;
     }  
   
-    /*try {
-      const res = await fetch("", {
+    try {
+      const res = await fetch("http://localhost:3000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-        if(res.ok) {
+      if(res.ok) {
+        const data = await res.json();
 
-          const data = await res.json(); //Captura los datos que responde el back
+        toast.success(`¡Registro exitoso! ID: ${data.id}`);
 
-          toast.success(`¡Registro exitoso! ID: ${data.id}`);
+        localStorage.setItem("token", data.token);
 
-          localStorage.setItem("token", data.token); //Se guarda en el localStorage
+        // Limpiar formulario
+        setFormData({ 
+          nombre: "", 
+          email: "", 
+          password: ""
+        }); 
+        
+        setValidated(false);
 
-          //Limpiar formulario
-          setFormData({ 
-            nombre: "", 
-            correo: "", 
-            password: ""
-          }); 
-          
-          setValidated(false);
+        // Opcional: redirigir al login
+        navigate("/login");
+
       } else {
-          toast.error("Error al registrar usuario");
-        } 
-      } catch (err) {
-        console.error("Error al enviar los datos: ", err);
-    };*/
+        toast.error("Error al registrar usuario");
+      } 
+    } catch (err) {
+      console.error("Error al enviar los datos: ", err);
+      toast.error("Error en la comunicación con el servidor");
+    };
   }  
 
   return (
@@ -74,13 +78,12 @@ const RegistroForm = () => {
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control
                   required
-                  type="nombre"
+                  type="text"  
                   name="nombre"
                   value={formData.nombre}
                   onChange={handleChange}
                   placeholder="Nombre"
                 />
-
                 <Form.Control.Feedback type="invalid">
                   Ingresa tu Nombre
                 </Form.Control.Feedback>
@@ -90,17 +93,17 @@ const RegistroForm = () => {
 
           <div>
             <Form.Group className="mb-3">
-              <Form.Label>Correo</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control
                 required
                 type="email"
-                name="correo"
-                value={formData.correo}
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
-                placeholder="Correo electrónico"
+                placeholder="Email"
               />
               <Form.Control.Feedback type="invalid">
-                Ingresa un Correo Válido
+                Ingresa un Email Válido
               </Form.Control.Feedback>
             </Form.Group>
           </div>
@@ -111,14 +114,14 @@ const RegistroForm = () => {
               <Form.Control
                 required
                 type="password"
-                name="contraseña"
-                value={formData.contraseña}
+                name="password"  
+                value={formData.password}
                 onChange={handleChange}
                 minLength={8}
                 placeholder="Password"
               />
               <Form.Control.Feedback type="invalid">
-                La contraseña debe tener 8 caracteres.
+                La contraseña debe tener al menos 8 caracteres.
               </Form.Control.Feedback>
             </Form.Group>
           </div>
@@ -145,6 +148,7 @@ const RegistroForm = () => {
 }
 
 export default RegistroForm;
+
 
 
 
