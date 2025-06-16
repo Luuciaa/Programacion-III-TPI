@@ -31,7 +31,7 @@ try {
   app.use("/api/reservas", reservationRoutes);
 
   // Sincronizar base de datos
-  await sequelize.sync({ alter: true });
+  await sequelize.sync();
 
   // Iniciar servidor
   app.listen(PORT, () => {
