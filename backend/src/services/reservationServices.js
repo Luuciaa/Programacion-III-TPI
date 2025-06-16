@@ -1,4 +1,4 @@
-import { ReservaDeTurno } from "../models/reservation";
+import { ReservaDeTurno } from "../models/reservation.js";
 
 // Crear nueva reserva
 export const createReserva = async (req, res) => {

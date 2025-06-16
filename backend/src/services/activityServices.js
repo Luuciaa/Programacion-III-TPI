@@ -1,4 +1,4 @@
-import { Actividad } from "../models/activity";
+import { Actividad } from "../models/activity.js";
 
 // Crear nueva actividad
 export const createActividad = async (req, res) => {

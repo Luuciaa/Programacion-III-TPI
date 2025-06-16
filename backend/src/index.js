@@ -10,6 +10,7 @@ import reservationRoutes from "./routes/reservationRoutes.js";
 import "./models/user.js";
 import "./models/activity.js";
 import "./models/reservation.js";
+import "./models/associations.js";
 
 dotenv.config();
 
