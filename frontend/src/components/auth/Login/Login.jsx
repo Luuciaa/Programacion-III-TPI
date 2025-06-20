@@ -7,8 +7,6 @@ import {Form, FormGroup, Button, FormControl, Container } from "react-bootstrap"
 import { toast } from "react-toastify";
 
 
-
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +16,8 @@ const Login = () => {
     password: false,
     area: false,
   });
-  const [loginError /*setLoginError*/] = useState("");
+  const [loginError, /*setLoginError*/] = useState("");
+
   const navigate = useNavigate();
 
 
@@ -102,7 +101,7 @@ const Login = () => {
 
         //Redirecciono según el rol
         if (rol === "superadmin") {
-          navigate("/superadmin");
+          navigate("/superAdmin");
         } else if (rol === "admin") {
           navigate("/admin");
         } else if (rol === "socio") {
@@ -122,7 +121,7 @@ const Login = () => {
   return (
     <Container
       fluid
-      className="vh-100 d-flex justify-content-center align-items-center bg-while"
+      className="vh-100 d-flex justify-content-center align-items-center bg-white"
     >
       <div className="login-box p-4 shadow-sm bg-light rounded">
         <Form onSubmit={handleSubmit}>

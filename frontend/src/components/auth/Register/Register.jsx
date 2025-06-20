@@ -10,7 +10,7 @@ const RegistroForm = () => {
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    nombre: "",
+    name: "",
     email: "",
     password: "",
   });
@@ -47,7 +47,7 @@ const RegistroForm = () => {
 
         // Limpiar formulario
         setFormData({ 
-          nombre: "", 
+          name: "", 
           email: "", 
           password: ""
         }); 
@@ -79,8 +79,8 @@ const RegistroForm = () => {
                 <Form.Control
                   required
                   type="text"  
-                  name="nombre"
-                  value={formData.nombre}
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
                   placeholder="Nombre"
                 />
