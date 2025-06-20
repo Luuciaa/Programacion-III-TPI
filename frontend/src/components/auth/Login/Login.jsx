@@ -174,7 +174,7 @@ const Login = () => {
               >
                 <option value=""> Seleccionar Área</option>
                 <option value="admin">Admin</option>
-                <option value="usuario">Usuario</option>
+                <option value="socio">Socio</option>
                 <option value="superAdmin">Super-Admin</option>
               </FormControl>
               {errors.area && (

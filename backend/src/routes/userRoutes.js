@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 
-// Servicios del usuario - // User Services
+// Servicios del usuario (Socio) - // User Services
 import {
   getAllUsers,
   getUserById,

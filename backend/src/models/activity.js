@@ -28,6 +28,7 @@ export const Actividad = sequelize.define(
     },
   },
   {
+    tableName: "actividades",
     timestamps: false,
   }
 );

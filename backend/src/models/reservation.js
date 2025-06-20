@@ -29,6 +29,7 @@ export const ReservaDeTurno = sequelize.define(
     },
   },
   {
+    tableName: "reserva_de_turnos",
     timestamps: false,
   }
 );

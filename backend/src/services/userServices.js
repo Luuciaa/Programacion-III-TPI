@@ -21,6 +21,29 @@ export const getUserById = async (req, res) => {
   }
 };
 
+// Crear nuevo usuario
+export const createUser = async (req, res) => {
+  try {
+    const { name, email, password, rol } = req.body;
+
+    // Validaciones mínimas
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Faltan campos obligatorios" });
+    }
+
+    const nuevoUsuario = await User.create({
+      name,
+      email,
+      password,
+      rol,
+    });
+
+    res.status(201).json(nuevoUsuario); 
+  } catch (error) {
+    res.status(400).json({ message: "Error al crear el usuario", error: error.message });
+  }
+};
+
 // Actualizar usuario por ID
 export const updateUser = async (req, res) => {
   try {
