@@ -13,7 +13,7 @@ export const validateEmail = (email) => {
   return regex.test(email);
 };
 
-// Valida contraseña con condiciones fijas:
+
 // mínimo 8 caracteres, al menos un número y una mayúscula
 export const validatePassword = (password) => {
   if (typeof password !== "string") return false;

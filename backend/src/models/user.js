@@ -20,7 +20,7 @@ export const User = sequelize.define(
       unique: true,
     },
     password: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     role: {

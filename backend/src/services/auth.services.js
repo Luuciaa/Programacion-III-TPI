@@ -24,7 +24,7 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      rol: "socio",
+      role: "socio",
       estadoCuenta: "Vencida",
       fechaIngreso: new Date(),
       mesDeAbono: null,
@@ -35,7 +35,7 @@ export const registerUser = async (req, res) => {
 
     // Generar token al registrar
     const token = jwt.sign(
-      { id: newUser.id, email: newUser.email, rol: newUser.rol },
+      { id: newUser.id, email: newUser.email, role: newUser.role },
       SECRET_KEY,
       { expiresIn: '1h' }
     );
@@ -70,7 +70,7 @@ export const loginUser = async (req, res) => {
       return res.status(500).json({ message: "Error de configuración de seguridad" });
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, rol: user.rol },
+      { id: user.id, email: user.email, role: user.role },
       SECRET_KEY,
       { expiresIn: '1h' }
     );

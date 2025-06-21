@@ -24,7 +24,7 @@ export const getUserById = async (req, res) => {
 // Crear nuevo usuario
 export const createUser = async (req, res) => {
   try {
-    const { name, email, password, rol } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Validaciones mínimas
     if (!name || !email || !password) {
@@ -35,7 +35,7 @@ export const createUser = async (req, res) => {
       name,
       email,
       password,
-      rol,
+      role,
     });
 
     res.status(201).json(nuevoUsuario); 
@@ -83,10 +83,10 @@ export const changeUserRole = async (req, res) => {
     const user = await User.findByPk(req.params.id);
     if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
 
-    const { rol } = req.body;
-    if (!rol) return res.status(400).json({ message: "Debe enviar el rol" });
+    const { role } = req.body;
+    if (!role) return res.status(400).json({ message: "Debe enviar el rol" });
 
-    user.rol = rol;
+    user.role = role;
     await user.save();
     res.json({ message: "Rol actualizado", user });
   } catch (error) {

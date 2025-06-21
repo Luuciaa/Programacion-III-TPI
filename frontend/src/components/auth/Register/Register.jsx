@@ -30,7 +30,10 @@ const RegistroForm = () => {
       toast.error("Por favor completalos correctamente")
       return;
     }  
-  
+    
+
+    
+
     try {
       const res = await fetch("http://localhost:3000/api/auth/register", {
         method: "POST",
@@ -54,7 +57,7 @@ const RegistroForm = () => {
         
         setValidated(false);
 
-        // Opcional: redirigir al login
+        
         navigate("/login");
 
       } else {
