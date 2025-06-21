@@ -19,11 +19,11 @@ export const verifyToken = (req, res, next) => {
   }
 };
 
-export const checkRole = (rolPermitido) => {
+export const checkRole = (rolePermitido) => {
   return (req, res, next) => {
     if (!req.user) return res.status(401).json({ message: "No autenticado" });
 
-    if (req.user.rol !== rolPermitido) {
+    if (req.user.role !== rolePermitido) {
       return res.status(403).json({ message: "Acceso denegado" });
     }
 
@@ -34,8 +34,8 @@ export const checkRole = (rolPermitido) => {
 
 // Middleware: Solo Admin o SuperAdmin
 export const isAdmin = (req, res, next) => {
-  const { rol } = req.user;
-  if (rol === "admin" || rol === "superadmin") return next();
+  const { role } = req.user;
+  if (role === "admin" || role === "superadmin") return next();
   return res
     .status(403)
     .json({ message: "Acceso restringido a administradores" });
@@ -43,8 +43,8 @@ export const isAdmin = (req, res, next) => {
 
 // Middleware: Solo SuperAdmin
 export const isSuperAdmin = (req, res, next) => {
-  const { rol } = req.user;
-  if (rol === "superadmin") return next();
+  const { role } = req.user;
+  if (role === "superadmin") return next();
   return res
     .status(403)
     .json({ message: "Acceso solo para super administradores" });
