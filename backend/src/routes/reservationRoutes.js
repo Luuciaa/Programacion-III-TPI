@@ -11,18 +11,23 @@ import { verifyToken, isAdmin, isSuperAdmin } from "../middleware/authMiddleware
 
 const router = Router();
 
-
 router.use(verifyToken);
 
-// Socios pueden ver y crear reservas
-router.get("/", getAllReservas);
-router.get("/:id", getReservaById);
-router.post("/", createReserva);
+// Middleware para permitir socios, admins y superadmins
+const allowSocioAdminSuper = (req, res, next) => {
+  const role = req.user.role;
+  if (role === "socio" || role === "admin" || role === "superadmin") {
+    return next();
+  }
+  return res.status(403).json({ message: "No autorizado" });
+};
 
-// Solo admins pueden modificar reservas
+router.get("/", allowSocioAdminSuper, getAllReservas);
+router.get("/:id", allowSocioAdminSuper, getReservaById);
+router.post("/", allowSocioAdminSuper, createReserva);
+
 router.put("/:id", isAdmin, updateReserva);
-
-// Solo superadmins pueden borrar reservas
 router.delete("/:id", isSuperAdmin, deleteReserva);
 
 export default router;
+

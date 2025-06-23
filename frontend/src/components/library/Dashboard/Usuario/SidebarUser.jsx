@@ -17,17 +17,17 @@ const SidebarUser = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/user/clases" className="nav-link text-white">
+          <NavLink to="/user/lista-clases" className="nav-link text-white">
             Mis Clases
           </NavLink>
         </li>
         <li>
-          <NavLink to="/user/reservas" className="nav-link text-white">
+          <NavLink to="/user/mis-reservas" className="nav-link text-white">
             Mis Reservas
           </NavLink>
         </li>
         <li>
-          <NavLink to="/user/cuota" className="nav-link text-white">
+          <NavLink to="/user/estado-cuota" className="nav-link text-white">
             Estado de Cuota
           </NavLink>
         </li>

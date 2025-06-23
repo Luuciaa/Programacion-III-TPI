@@ -34,7 +34,7 @@ router.put("/:id", updateUser);
 
 router.delete("/:id", isSuperAdmin, deleteUser);
 
-router.patch("/:id/rol", isSuperAdmin, changeUserRole);
+router.patch("/:id/role", isSuperAdmin, changeUserRole);
 
 export default router;
 

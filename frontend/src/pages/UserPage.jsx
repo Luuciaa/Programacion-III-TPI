@@ -14,6 +14,7 @@ const UserPage = () => {
   console.log("Próxima reserva:", proximaReserva);
   console.log("User en contexto:", user);
   console.log("Token en localStorage:", localStorage.getItem("token"));
+  
   useEffect(() => {
   if (!user) return;
 
@@ -21,18 +22,15 @@ const UserPage = () => {
     try {
       const token = localStorage.getItem("token");
 
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
       // Traer todas las actividades y reservas
       const [actividadesRes, reservasRes] = await Promise.all([
-        fetch("http://localhost:3000/api/actividades", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }),
-        fetch("http://localhost:3000/api/reservas", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }),
+        fetch("http://localhost:3000/api/actividades", { headers }),
+        fetch("http://localhost:3000/api/reservas", { headers }),
       ]);
 
       if (!actividadesRes.ok || !reservasRes.ok) {

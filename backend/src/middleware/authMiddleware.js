@@ -5,6 +5,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 // Middleware: Verifica que el token sea válido
 export const verifyToken = (req, res, next) => {
   const header = req.header("Authorization") || "";
+  console.log("HEADER AUTHORIZATION:", header); 
   const token = header.split(" ")[1];
 
   if (!token)
@@ -12,7 +13,7 @@ export const verifyToken = (req, res, next) => {
 
   try {
     const payload = jwt.verify(token, SECRET_KEY);
-    req.user = payload; // Guarda datos útiles (id, rol, email)
+    req.user = payload; // Guarda datos útiles (id, role, email)
     console.log(req.user.id, req.user.email, req.user.role);
 
     next();
@@ -33,7 +34,6 @@ export const checkRole = (rolePermitido) => {
   };
 };
 
-
 // Middleware: Solo Admin o SuperAdmin
 export const isAdmin = (req, res, next) => {
   const { role } = req.user;
@@ -51,3 +51,4 @@ export const isSuperAdmin = (req, res, next) => {
     .status(403)
     .json({ message: "Acceso solo para super administradores" });
 };
+

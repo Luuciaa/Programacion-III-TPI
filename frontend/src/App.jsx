@@ -76,12 +76,13 @@ const AppContent = () => {
         <Route path="/user" element={<AuthLayout allowedRoles={["socio"]} />}>
           <Route element={<UserLayout />}>
             <Route index element={<UserPage />} />
-            <Route path="estado-cuota" element={<EstadoCuota />} />
-            <Route path="historial-asistencias" element={<HistorialAsistencias />} />
-            <Route path="lista-clases" element={<ListaClases />} />
-            <Route path="mis-reservas" element={<MisReservas />} />
-            <Route path="notificaciones" element={<NotificacionesUser />} />
             <Route path="perfil" element={<PerfilUser />} />
+            <Route path="estado-cuota" element={<EstadoCuota />} />
+            <Route path="mis-reservas" element={<MisReservas />} />
+            <Route path="lista-clases" element={<ListaClases />} />
+            <Route path="notificaciones" element={<NotificacionesUser />} />
+            <Route path="historial-asistencias" element={<HistorialAsistencias />} />
+            
           </Route>
         </Route>
         

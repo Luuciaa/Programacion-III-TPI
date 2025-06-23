@@ -1,10 +1,14 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Outlet } from "react-router-dom";
+import AuthContext from "../../context/AuthContext/AuthContext";
 import SidebarUsuario from "../library/Dashboard/Usuario/SidebarUser";
 import NavBarUser from "./NavBarUser/NavBarUser";
 import Footer from "./Footer/Footer";
 
-const UserLayout = ({ user, onLogout }) => {
+const UserLayout = () => {
+
+  const { user, logout } = useContext(AuthContext);
+
   return (
     <div className="d-flex">
        {/* Sidebar visible solo en md+ */}
@@ -12,9 +16,8 @@ const UserLayout = ({ user, onLogout }) => {
         <SidebarUsuario />
       </div>
       
-      
       <div className="flex-grow-1 d-flex flex-column min-vh-100">
-        <NavBarUser user={user} onLogout={onLogout} />
+        <NavBarUser user={user} onLogout={logout} />
         
         <main className="flex-grow-1 p-4">
           <Outlet />
@@ -22,6 +25,7 @@ const UserLayout = ({ user, onLogout }) => {
         
         <Footer />
       </div>
+      
     </div>
   );
 };
