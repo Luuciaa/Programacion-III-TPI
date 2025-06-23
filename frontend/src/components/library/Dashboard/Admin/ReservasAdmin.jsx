@@ -9,60 +9,64 @@ const ReservasAdmin = () => {
     estado: "",
   });
 
+  // Cargar reservas desde API cuando se monta el componente
   useEffect(() => {
-    const reservas = [
-      {
-        id: 1,
-        socio: "Juan",
-        fecha: "2025-05-20",
-        actividadId: "Zumba",
-        estado: "Pendiente",
-      },
-      {
-        id: 2,
-        socio: "Ana",
-        fecha: "2025-05-21",
-        actividadId: "Funcional",
-        estado: "Asistió",
-      },
-      {
-        id: 3,
-        socio: "Luis",
-        fecha: "2025-05-22",
-        actividadId: "Cardio",
-        estado: "Faltó",
-      },
-    ];
-    setReservas(reservas);
+    fetch("http://localhost:3000/api/reservas")
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al cargar reservas");
+        return res.json();
+      })
+      .then((data) => setReservas(data))
+      .catch(() => toast.error("Error al cargar reservas"));
   }, []);
 
-  const toggleAsistencia = (id) => {
-    setReservas((prev) =>
-      prev.map((reserva) =>
-        reserva.id === id
-          ? {
-              ...reserva,
-              estado: reserva.estado === "Asistió" ? "Faltó" : "Asistió",
-            }
-          : reserva
-      )
-    );
+  // Alternar estado asistencia y actualizar en backend
+  const toggleAsistencia = async (id) => {
+    try {
+      const reservaActual = reservas.find((r) => r.id === id);
+      if (!reservaActual) return;
 
-    const reservaActual = reservas.find((r) => r.id === id);
-    const nuevoEstado = reservaActual.estado === "Asistió" ? "Faltó" : "Asistió";
-    toast.success(`Se marcó como "${nuevoEstado}"`);
+      const nuevoEstado = reservaActual.estado === "Asistió" ? "Faltó" : "Asistió";
+
+      const res = await fetch(`http://localhost:3000/api/reservas/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...reservaActual, estado: nuevoEstado }),
+      });
+
+      if (!res.ok) throw new Error("Error actualizando reserva");
+
+      setReservas((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, estado: nuevoEstado } : r))
+      );
+
+      toast.success(`Se marcó como "${nuevoEstado}"`);
+    } catch {
+      toast.error("No se pudo actualizar la asistencia");
+    }
   };
 
-  const handleEliminar = (id) => {
-    setReservas((prev) => prev.filter((r) => r.id !== id));
-    toast.info("Reserva eliminada");
+  // Eliminar reserva en backend y actualizar lista local
+  const handleEliminar = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/reservas/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Error eliminando reserva");
+
+      setReservas((prev) => prev.filter((r) => r.id !== id));
+      toast.info("Reserva eliminada");
+    } catch {
+      toast.error("No se pudo eliminar la reserva");
+    }
   };
 
+  // Filtrado de reservas
   const reservasFiltradas = reservas.filter((reserva) => {
     return (
       (filtros.fecha === "" || reserva.fecha === filtros.fecha) &&
-      (filtros.actividadId === "" ||
-        reserva.actividadId === filtros.actividadId) &&
+      (filtros.actividadId === "" || reserva.actividadId === filtros.actividadId) &&
       (filtros.estado === "" || reserva.estado === filtros.estado)
     );
   });
@@ -89,9 +93,7 @@ const ReservasAdmin = () => {
             id="actividad"
             className="form-select"
             value={filtros.actividadId}
-            onChange={(e) =>
-              setFiltros({ ...filtros, actividadId: e.target.value })
-            }
+            onChange={(e) => setFiltros({ ...filtros, actividadId: e.target.value })}
           >
             <option value="">Todas</option>
             <option value="Zumba">Zumba</option>
@@ -106,9 +108,7 @@ const ReservasAdmin = () => {
             id="estado"
             className="form-select"
             value={filtros.estado}
-            onChange={(e) =>
-              setFiltros({ ...filtros, estado: e.target.value })
-            }
+            onChange={(e) => setFiltros({ ...filtros, estado: e.target.value })}
           >
             <option value="">Todos</option>
             <option value="Pendiente">Pendiente</option>
@@ -175,3 +175,4 @@ const ReservasAdmin = () => {
 };
 
 export default ReservasAdmin;
+

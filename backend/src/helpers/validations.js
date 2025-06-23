@@ -1,51 +1,48 @@
-// Valida que un string tenga longitud mínima y/o máxima
-export const validateString = (str, min = null, max = null) => {
-  if (typeof str !== "string") return false;
-  if (min !== null && str.length < min) return false;
-  if (max !== null && str.length > max) return false;
-  return true;
+// Valida que sea un string no vacío
+export const validateString = (str) => {
+  return typeof str === "string" && str.trim().length > 0;
 };
 
-// Valida formato básico de email
+// Valida email con una regla mínima
 export const validateEmail = (email) => {
-  if (typeof email !== "string") return false;
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
+  return typeof email === "string" && email.includes("@");
 };
 
-
-// mínimo 8 caracteres, al menos un número y una mayúscula
+// Valida que la contraseña tenga al menos 6 caracteres
 export const validatePassword = (password) => {
-  if (typeof password !== "string") return false;
-  if (password.length < 8) return false;
-  if (!/\d/.test(password)) return false;      // debe tener al menos un número
-  if (!/[A-Z]/.test(password)) return false;   // debe tener al menos una mayúscula
-  return true;
+  return typeof password === "string" && password.length >= 6;
 };
 
-// Validación para registro de usuario
+// Validación para registro
 export const validateRegisterUser = (data = {}) => {
   const { name, email, password } = data;
-  if (!name || !validateString(name, 8, null)) {
+
+  if (!validateString(name)) {
     return { error: true, message: "Nombre inválido" };
   }
-  if (!email || !validateEmail(email)) {
+
+  if (!validateEmail(email)) {
     return { error: true, message: "Email inválido" };
   }
-  if (!password || !validatePassword(password)) {
-    return { error: true, message: "Contraseña inválida" };
+
+  if (!validatePassword(password)) {
+    return { error: true, message: "Contraseña inválida (mínimo 6 caracteres)" };
   }
+
   return { error: false, message: "" };
 };
 
-// Validación para login de usuario
+// Validación para login
 export const validateLoginUser = (data = {}) => {
   const { email, password } = data;
-  if (!email || !validateEmail(email)) {
+
+  if (!validateEmail(email)) {
     return { error: true, message: "Email inválido" };
   }
-  if (!password || !validatePassword(password)) {
+
+  if (!validatePassword(password)) {
     return { error: true, message: "Contraseña inválida" };
   }
+
   return { error: false, message: "" };
 };

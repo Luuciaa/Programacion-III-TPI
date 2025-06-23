@@ -5,11 +5,11 @@ import { toast } from "react-toastify";
 const CambiarRol = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState("");
-  const [nuevoRol, setNuevoRol] = useState("Socio");
+  const [nuevoRol, setNuevoRol] = useState("socio");
 
   // Traer usuarios desde backend al cargar
   useEffect(() => {
-    fetch("/api/usuarios")
+    fetch("http://localhost:3000/api/user")
       .then((res) => {
         if (!res.ok) throw new Error("Error al cargar usuarios");
         return res.json();
@@ -26,10 +26,10 @@ const CambiarRol = () => {
       return;
     }
 
-    fetch(`/api/usuarios/${usuarioSeleccionado}/rol`, {
+    fetch(`http://localhost:3000/api/user/${usuarioSeleccionado}/rol`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rol: nuevoRol }),
+      body: JSON.stringify({ role: nuevoRol }),
     })
       .then((res) => {
         if (!res.ok) throw new Error("Error al actualizar rol");
@@ -40,11 +40,11 @@ const CambiarRol = () => {
         // Actualizar la lista en pantalla
         setUsuarios((prev) =>
           prev.map((u) =>
-            u._id === usuarioSeleccionado ? { ...u, rol: nuevoRol } : u
+            u.id === usuarioSeleccionado ? { ...u, role: nuevoRol } : u
           )
         );
         setUsuarioSeleccionado("");
-        setNuevoRol("Socio");
+        setNuevoRol("socio");
       })
       .catch(() => toast.error("Error al actualizar el rol"));
   };
@@ -62,8 +62,8 @@ const CambiarRol = () => {
           >
             <option value=""> Elegí un usuario </option>
             {usuarios.map((u) => (
-              <option key={u._id} value={u._id}>
-                {u.nombre} ({u.rol})
+              <option key={u.id} value={u.id}>
+                {u.name} ({u.role})
               </option>
             ))}
           </Form.Select>
@@ -75,9 +75,9 @@ const CambiarRol = () => {
             value={nuevoRol}
             onChange={(event) => setNuevoRol(event.target.value)}
           >
-            <option value="Socio">Socio</option>
-            <option value="Admin">Admin</option>
-            <option value="Super-Admin">Super-Admin</option>
+            <option value="socio">Socio</option>
+            <option value="admin">Admin</option>
+            <option value="superadmin">Super-Admin</option>
           </Form.Select>
         </Form.Group>
 
@@ -90,3 +90,4 @@ const CambiarRol = () => {
 };
 
 export default CambiarRol;
+

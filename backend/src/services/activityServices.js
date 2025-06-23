@@ -3,27 +3,44 @@ import { Actividad } from "../models/activity.js";
 // Crear nueva actividad
 export const createActividad = async (req, res) => {
   try {
-    const { nombreClase, estado, diasYhorarios, cupoMaximo } = req.body;
+    const { nombreClase, estado, diasYHorarios, cupoMaximo } = req.body;
+
+    // Validar campos obligatorios
+    if (!nombreClase || !estado || !diasYHorarios || !cupoMaximo) {
+      return res.status(400).json({ message: "Todos los campos son obligatorios" });
+    }
 
     const nuevaActividad = await Actividad.create({
       nombreClase,
       estado,
-      diasYhorarios,
+      diasYHorarios,
       cupoMaximo,
     });
 
     res.status(201).json(nuevaActividad);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error al crear actividad" });
   }
 };
 
-// Obtener todas las actividades
+// Obtener todas las actividades con filtro opcional por día y hora
 export const getAllActividades = async (req, res) => {
+  const { dia, hora } = req.query;
+
   try {
-    const actividades = await Actividad.findAll();
+    let actividades = await Actividad.findAll();
+
+    if (dia || hora) {
+      actividades = actividades.filter((actividad) =>
+        (!dia || actividad.diasYHorarios.includes(dia)) &&
+        (!hora || actividad.diasYHorarios.includes(hora))
+      );
+    }
+
     res.json(actividades);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error al obtener actividades" });
   }
 };
@@ -34,10 +51,13 @@ export const getActividadById = async (req, res) => {
     const { id } = req.params;
     const actividad = await Actividad.findByPk(id);
 
-    if (!actividad) return res.status(404).json({ message: "Actividad no encontrada" });
+    if (!actividad) {
+      return res.status(404).json({ message: "Actividad no encontrada" });
+    }
 
     res.json(actividad);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error al obtener actividad" });
   }
 };
@@ -46,20 +66,24 @@ export const getActividadById = async (req, res) => {
 export const updateActividad = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombreClase, estado, diasYhorarios, cupoMaximo } = req.body;
+    const { nombreClase, estado, diasYHorarios, cupoMaximo } = req.body;
 
     const actividad = await Actividad.findByPk(id);
-    if (!actividad) return res.status(404).json({ message: "Actividad no encontrada" });
+
+    if (!actividad) {
+      return res.status(404).json({ message: "Actividad no encontrada" });
+    }
 
     actividad.nombreClase = nombreClase || actividad.nombreClase;
     actividad.estado = estado || actividad.estado;
-    actividad.diasYhorarios = diasYhorarios || actividad.diasYhorarios;
+    actividad.diasYHorarios = diasYHorarios || actividad.diasYHorarios;
     actividad.cupoMaximo = cupoMaximo || actividad.cupoMaximo;
 
     await actividad.save();
 
     res.json({ message: "Actividad actualizada", actividad });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error al actualizar actividad" });
   }
 };
@@ -70,12 +94,16 @@ export const deleteActividad = async (req, res) => {
     const { id } = req.params;
     const actividad = await Actividad.findByPk(id);
 
-    if (!actividad) return res.status(404).json({ message: "Actividad no encontrada" });
+    if (!actividad) {
+      return res.status(404).json({ message: "Actividad no encontrada" });
+    }
 
     await actividad.destroy();
 
     res.json({ message: "Actividad eliminada" });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error al eliminar actividad" });
   }
 };
+

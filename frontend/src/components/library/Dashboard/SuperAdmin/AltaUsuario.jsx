@@ -9,7 +9,7 @@ const AltaUsuario = () => {
     nombre: "",
     correo: "",
     password: "",
-    rol: "",
+    role: "",
   });
 
   const handleChange = (event) => {
@@ -40,7 +40,7 @@ const AltaUsuario = () => {
       if (res.ok) {
         const data = await res.json();
         toast.success(`¡Usuario creado! ID: ${data.id}`);
-        setFormData({ nombre: "", correo: "", password: "", rol: "" });
+        setFormData({ nombre: "", correo: "", password: "", role: "" });
         setValidated(false);
       } else {
         toast.error("Error al registrar usuario.");
@@ -65,7 +65,7 @@ const AltaUsuario = () => {
             <Form.Control
               required
               type="text"
-              name="nombre"
+              name="name"
               value={formData.nombre}
               onChange={handleChange}
               placeholder="Ingrese el nombre"
@@ -98,11 +98,11 @@ const AltaUsuario = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              minLength={8}
-              placeholder="Mínimo 8 caracteres"
+              minLength={6}
+              placeholder="Mínimo 6 caracteres"
             />
             <Form.Control.Feedback type="invalid">
-              La contraseña debe tener 8 caracteres.
+              La contraseña debe tener 6 caracteres.
             </Form.Control.Feedback>
           </Form.Group>
 
@@ -110,8 +110,8 @@ const AltaUsuario = () => {
             <Form.Label>Rol</Form.Label>
             <Form.Select
               required
-              name="rol"
-              value={formData.rol}
+              name="role"
+              value={formData.role}
               onChange={handleChange}
             >
               <option value="">Seleccionar rol</option>

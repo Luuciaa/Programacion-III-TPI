@@ -5,16 +5,16 @@ import { toast } from "react-toastify";
 const GestionUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [usuarioNuevo, setUsuarioNuevo] = useState({
-    nombre: "",
+    name: "",
     email: "",
-    rol: "Socio",
+    role: "socio",
   });
   const [usuarioEditando, setUsuarioEditando] = useState(null);
   const [mostrarModal, setMostrarModal] = useState(false);
 
   // Cargar usuarios al montar
   useEffect(() => {
-    fetch("/api/usuarios")
+    fetch("http://localhost:3000/api/user")
       .then((res) => {
         if (!res.ok) throw new Error("Error al cargar usuarios");
         return res.json();
@@ -27,7 +27,7 @@ const GestionUsuarios = () => {
   const handleCrearUsuario = (event) => {
     event.preventDefault();
 
-    fetch("/api/usuarios", {
+    fetch("http://localhost:3000/api/user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(usuarioNuevo),
@@ -38,7 +38,7 @@ const GestionUsuarios = () => {
       })
       .then((data) => {
         setUsuarios([...usuarios, data]);
-        setUsuarioNuevo({ nombre: "", email: "", rol: "Socio" });
+        setUsuarioNuevo({ name: "", email: "", role: "socio" });
         toast.success("Usuario creado");
       })
       .catch(() => toast.error("Error al crear usuario"));
@@ -52,7 +52,7 @@ const GestionUsuarios = () => {
 
   // Guardar cambios editados
   const guardarCambios = () => {
-    fetch(`/api/usuarios/${usuarioEditando.id}`, {
+    fetch(`http://localhost:3000/api/user/${usuarioEditando.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(usuarioEditando),
@@ -74,7 +74,7 @@ const GestionUsuarios = () => {
 
   // Eliminar usuario
   const handleEliminar = (id) => {
-    fetch(`/api/usuarios/${id}`, { method: "DELETE" })
+    fetch(`http://localhost:3000/api/user/${id}`, { method: "DELETE" })
       .then((res) => {
         if (!res.ok) throw new Error("Error al eliminar usuario");
         setUsuarios(usuarios.filter((u) => u.id !== id));
@@ -91,7 +91,7 @@ const GestionUsuarios = () => {
           <Form.Control
             type="text"
             placeholder="Nombre"
-            value={usuarioNuevo.nombre}
+            value={usuarioNuevo.name}
             onChange={(event) =>
               setUsuarioNuevo({ ...usuarioNuevo, nombre: event.target.value })
             }
@@ -111,14 +111,14 @@ const GestionUsuarios = () => {
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Select
-            value={usuarioNuevo.rol}
+            value={usuarioNuevo.role}
             onChange={(event) =>
-              setUsuarioNuevo({ ...usuarioNuevo, rol: event.target.value })
+              setUsuarioNuevo({ ...usuarioNuevo, role: event.target.value })
             }
           >
-            <option value="Socio">Socio</option>
-            <option value="Admin">Admin</option>
-            <option value="Super-Admin">Super-Admin</option>
+            <option value="socio">Socio</option>
+            <option value="admin">Admin</option>
+            <option value="superadmin">Super-Admin</option>
           </Form.Select>
         </Form.Group>
         <Button type="submit" variant="success">
@@ -139,9 +139,9 @@ const GestionUsuarios = () => {
         <tbody>
           {usuarios.map((usuario) => (
             <tr key={usuario.id}>
-              <td>{usuario.nombre}</td>
+              <td>{usuario.name}</td>
               <td>{usuario.email}</td>
-              <td>{usuario.rol}</td>
+              <td>{usuario.role}</td>
               <td>
                 <Button
                   variant="info"
@@ -164,7 +164,6 @@ const GestionUsuarios = () => {
         </tbody>
       </Table>
 
-      {/* Modal de edición */}
       <Modal show={mostrarModal} onHide={() => setMostrarModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Editar Usuario</Modal.Title>
@@ -176,7 +175,7 @@ const GestionUsuarios = () => {
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control
                   type="text"
-                  value={usuarioEditando.nombre}
+                  value={usuarioEditando.name}
                   onChange={(event) =>
                     setUsuarioEditando({
                       ...usuarioEditando,
@@ -201,17 +200,17 @@ const GestionUsuarios = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Rol</Form.Label>
                 <Form.Select
-                  value={usuarioEditando.rol}
+                  value={usuarioEditando.role}
                   onChange={(event) =>
                     setUsuarioEditando({
                       ...usuarioEditando,
-                      rol: event.target.value,
+                      role: event.target.value,
                     })
                   }
                 >
-                  <option value="Socio">Socio</option>
-                  <option value="Admin">Admin</option>
-                  <option value="Super-Admin">Super-Admin</option>
+                  <option value="socio">Socio</option>
+                  <option value="admin">Admin</option>
+                  <option value="superadmin">Super-Admin</option>
                 </Form.Select>
               </Form.Group>
             </>
@@ -231,4 +230,5 @@ const GestionUsuarios = () => {
 };
 
 export default GestionUsuarios;
+
 

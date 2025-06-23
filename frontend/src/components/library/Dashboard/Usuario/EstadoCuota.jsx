@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Badge } from "react-bootstrap";
-import { getColorCuota } from "../../utils/getColorCuota";
+import { getColorCuota } from "../../../../utils/helpersAdmin";
 
 const EstadoCuota = ({ estadoCuota }) => {
   const color = getColorCuota(estadoCuota);

@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
+console.log("Clave secreta usada:", process.env.SECRET_KEY);
 
 import express from "express";
 import cors from "cors"; 

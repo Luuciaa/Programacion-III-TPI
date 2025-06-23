@@ -20,12 +20,12 @@ const PerfilUser = ({ datosUsuario, onGuardarCambios }) => {
     <Card className="shadow-sm p-4 mt-4">
       <h4 className="mb-4">Mi Perfil</h4>
       <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="nombre">
+        <Form.Group className="mb-3" controlId="name">
           <Form.Label>Nombre</Form.Label>
           <Form.Control
             type="text"
-            name="nombre"
-            value={perfil.nombre}
+            name="name"
+            value={perfil.name}
             onChange={handleChange}
             required
           />

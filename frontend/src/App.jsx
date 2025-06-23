@@ -2,11 +2,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext/AuthContext";
 
 // Layouts
+import UserLayout from "./components/MainLayout/UserLayout";
 import AdminLayout from "./components/MainLayout/AdminLayout";
-
-// Rutas privadas
-import RutaPrivadaRol from "./routes/RutaPrivadaRol";
-
+import SuperAdminLayout from "./components/MainLayout/SuperAdminLayout";
+import AuthLayout from "./layout/AuthLayout/AuthLayout";
 
 // Estilos
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,8 +21,17 @@ import NotFound from "./components/ui/NotFound/NotFound";
 // Páginas privadas
 import AdminPage from "./pages/AdminPage";
 import UserPage from "./pages/UserPage";
-import SuperAdminPage from "./pages/SuperAdminPage";
+//import SuperAdminPage from "./pages/SuperAdminPage";
 import Unauthorized from "./pages/Unauthorize";
+
+
+import EstadoCuota from "./components/library/Dashboard/Usuario/EstadoCuota";
+import HistorialAsistencias from "./components/library/Dashboard/Usuario/HistorialAsistencias";
+import ListaClases from "./components/library/Dashboard/Usuario/ListaClases";
+import MisReservas from "./components/library/Dashboard/Usuario/MisReservas";
+import NotificacionesUser from "./components/library/Dashboard/Usuario/NotificacionesUser";
+import PerfilUser from "./components/library/Dashboard/Usuario/PerfilUser";
+
 
 // Páginas hijas del admin
 import UsuariosAdmin from "./components/library/Dashboard/Admin/UsuariosAdmin";
@@ -65,49 +73,44 @@ const AppContent = () => {
         <Route path="/register" element={<Register />} />
 
         {/* Ruta privada - Usuario Socio */}
-        <Route
-          path="/user"
-          element={
-            <RutaPrivadaRol rol="user">
-              <UserPage />
-            </RutaPrivadaRol>
-          }
-        />
+        <Route path="/user" element={<AuthLayout allowedRoles={["socio"]} />}>
+          <Route element={<UserLayout />}>
+            <Route index element={<UserPage />} />
+            <Route path="estado-cuota" element={<EstadoCuota />} />
+            <Route path="historial-asistencias" element={<HistorialAsistencias />} />
+            <Route path="lista-clases" element={<ListaClases />} />
+            <Route path="mis-reservas" element={<MisReservas />} />
+            <Route path="notificaciones" element={<NotificacionesUser />} />
+            <Route path="perfil" element={<PerfilUser />} />
+          </Route>
+        </Route>
+        
 
-        {/* Ruta privada - Admin con subrutas y layout */}
-        <Route
-          path="/admin"
-          element={
-            <RutaPrivadaRol rol="admin">
-              <AdminLayout />
-            </RutaPrivadaRol>
-          }
-        >
-          <Route index element={<AdminPage />} />
-          <Route path="usuarios" element={<UsuariosAdmin />} />
-          <Route path="pagos" element={<PagosAdmin />} />
-          <Route path="actividades" element={<ActividadesAdmin />} />
-          <Route path="reservas" element={<ReservasAdmin />} />
-          
+         {/* Ruta privada - Admin con layout */}
+        <Route path="/admin" element={<AuthLayout allowedRoles={["admin"]} />}>
+          <Route element={<AdminLayout />}>
+            <Route index element={<AdminPage />} />
+            <Route path="usuarios" element={<UsuariosAdmin />} />
+            <Route path="pagos" element={<PagosAdmin />} />
+            <Route path="actividades" element={<ActividadesAdmin />} />
+            <Route path="reservas" element={<ReservasAdmin />} />
+          </Route>
         </Route>
 
-        {/* Ruta privada - SuperAdmin */}
-        <Route
-          path="/superadmin"
-          element={
-            <RutaPrivadaRol rol="superAdmin">
-              <SuperAdminPage />
-            </RutaPrivadaRol>
-          }
-        >
-          <Route index element={<DashboardSuperAdmin />} />
-          <Route path="gestion-usuarios" element={<GestionUser />} />
-          <Route path="alta-usuario" element={<AltaUsuario />} />
-          <Route path="editar-usuario" element={<EditarUsuario />} />
-          <Route path="eliminar-usuario" element={<EliminarUsuario />} />
-          <Route path="cambio-rol" element={<CambioRol />} />
-          
+       {/* Ruta privada - SuperAdmin */}
+        <Route path="/superadmin" element={<AuthLayout allowedRoles={["superadmin"]} />}>
+          <Route element={<SuperAdminLayout />}>
+            <Route index element={<DashboardSuperAdmin />} />
+            <Route path="gestion-usuarios" element={<GestionUser />} />
+            <Route path="alta-usuario" element={<AltaUsuario />} />
+            <Route path="editar-usuario" element={<EditarUsuario />} />
+            <Route path="eliminar-usuario" element={<EliminarUsuario />} />
+            <Route path="cambio-rol" element={<CambioRol />} />
+          </Route>
         </Route>
+
+        {/* Ruta para acceso no autorizado */}
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* Ruta no encontrada */}
         <Route path="*" element={<NotFound />} />

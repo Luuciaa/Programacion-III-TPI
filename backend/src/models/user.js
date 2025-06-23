@@ -3,7 +3,7 @@ import { sequelize } from "../db.js";
 import { UserRoles, MetodoPago } from "../enums/enums.js";
 
 export const User = sequelize.define(
-  "User",
+  "user",
   {
     id: {
       type: DataTypes.INTEGER,

@@ -1,43 +1,67 @@
-import React, { useState } from "react";
-import { Card, Button, Form, Row, Col } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Card, Button, Form, Row, Col, Modal } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const usuariosIniciales = [
-  { id: 1, nombre: "Juan Perez", estadoCuota: "vencido", historialPagos: [] },
-  { id: 2, nombre: "Ana García", estadoCuota: "vencido", historialPagos: [] },
-];
-
 const PagosAdmin = () => {
-  const [usuarios, setUsuarios] = useState(usuariosIniciales);
+  const [usuarios, setUsuarios] = useState([]);
   const [montos, setMontos] = useState({});
   const [fechas, setFechas] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
 
-  const registrarPago = (usuarioId) => {
-    const monto = montos[usuarioId];
-    const fecha = fechas[usuarioId];
+  // Carga usuarios desde API
+  useEffect(() => {
+    fetch("/api/usuarios")
+      .then((res) => res.json())
+      .then((data) => setUsuarios(data))
+      .catch(() => toast.error("Error al cargar usuarios"));
+  }, []);
+
+  const abrirModalPago = (usuarioId) => {
+    setUsuarioSeleccionado(usuarioId);
+    setShowModal(true);
+  };
+
+  const cerrarModal = () => {
+    setShowModal(false);
+    setUsuarioSeleccionado(null);
+  };
+
+  // Confirmar y enviar pago
+  const confirmarPago = async () => {
+    if (!usuarioSeleccionado) return;
+
+    const monto = montos[usuarioSeleccionado];
+    const fecha = fechas[usuarioSeleccionado];
 
     if (!monto || !fecha) {
       toast.error("Completa monto y fecha");
       return;
     }
 
-    const usuariosActualizados = usuarios.map((usuario) =>
-      usuario.id === usuarioId
-        ? {
-            ...usuario,
-            estadoCuota: "al-dia",
-            historialPagos: [...usuario.historialPagos, { monto, fecha }],
-          }
-        : usuario
-    );
+    try {
+      const res = await fetch(`/api/usuarios/${usuarioSeleccionado}/pagos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ monto, fecha }),
+      });
 
-    setUsuarios(usuariosActualizados);
-    toast.success("Pago registrado con éxito");
+      if (!res.ok) throw new Error("Error al registrar pago");
 
-    // Limpiar solo los campos de ese usuario
-    setMontos((prev) => ({ ...prev, [usuarioId]: "" }));
-    setFechas((prev) => ({ ...prev, [usuarioId]: "" }));
+      // Actualizo la lista local con nuevo estado al día y pago agregado
+      const usuarioActualizado = await res.json();
+      setUsuarios((prev) =>
+        prev.map((u) => (u.id === usuarioActualizado.id ? usuarioActualizado : u))
+      );
+
+      toast.success("Pago registrado con éxito");
+      setMontos((prev) => ({ ...prev, [usuarioSeleccionado]: "" }));
+      setFechas((prev) => ({ ...prev, [usuarioSeleccionado]: "" }));
+      cerrarModal();
+    } catch {
+      toast.error("No se pudo registrar el pago");
+    }
   };
 
   return (
@@ -53,12 +77,12 @@ const PagosAdmin = () => {
                   Estado cuota:{" "}
                   <span
                     className={
-                      usuario.estadoCuota === "al-dia"
+                      usuario.estadoCuenta === "Pagada"
                         ? "text-success"
                         : "text-danger"
                     }
                   >
-                    {usuario.estadoCuota}
+                    {usuario.estadoCuenta.toLowerCase()}
                   </span>
                 </Card.Subtitle>
 
@@ -68,8 +92,8 @@ const PagosAdmin = () => {
                       type="number"
                       placeholder="Monto"
                       value={montos[usuario.id] || ""}
-                      onChange={(event) =>
-                        setMontos({ ...montos, [usuario.id]: event.target.value })
+                      onChange={(e) =>
+                        setMontos({ ...montos, [usuario.id]: e.target.value })
                       }
                     />
                   </Form.Group>
@@ -77,14 +101,14 @@ const PagosAdmin = () => {
                     <Form.Control
                       type="date"
                       value={fechas[usuario.id] || ""}
-                      onChange={(event) =>
-                        setFechas({ ...fechas, [usuario.id]: event.target.value })
+                      onChange={(e) =>
+                        setFechas({ ...fechas, [usuario.id]: e.target.value })
                       }
                     />
                   </Form.Group>
                   <Button
                     variant="primary"
-                    onClick={() => registrarPago(usuario.id)}
+                    onClick={() => abrirModalPago(usuario.id)}
                   >
                     Registrar Pago
                   </Button>
@@ -92,7 +116,7 @@ const PagosAdmin = () => {
 
                 <hr />
                 <h6>Historial</h6>
-                {usuario.historialPagos.length === 0 ? (
+                {(!usuario.historialPagos || usuario.historialPagos.length === 0) ? (
                   <p className="text-muted">Sin pagos aún</p>
                 ) : (
                   <ul className="list-unstyled">
@@ -108,9 +132,29 @@ const PagosAdmin = () => {
           </Col>
         ))}
       </Row>
+
+      {/* Modal confirmación pago */}
+      <Modal show={showModal} onHide={cerrarModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar pago</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Registrar pago de monto {montos[usuarioSeleccionado]} en fecha {fechas[usuarioSeleccionado]}?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={cerrarModal}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={confirmarPago}>
+            Confirmar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
 
 export default PagosAdmin;
+

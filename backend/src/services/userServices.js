@@ -93,3 +93,28 @@ export const changeUserRole = async (req, res) => {
     res.status(500).json({ message: "Error al cambiar rol" });
   }
 };
+
+export const registrarPago = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+    const { fecha, monto, metodoPago } = req.body;
+    if (!fecha || !monto || !metodoPago) {
+      return res.status(400).json({ message: "Faltan datos para registrar el pago" });
+    }
+
+    const nuevoPago = { fecha, monto, metodoPago };
+
+    // Suponiendo que historialPagos es un arreglo en la DB (tipo JSON)
+    user.historialPagos = [...(user.historialPagos || []), nuevoPago];
+    user.estadoCuenta = "Pagada";
+
+    await user.save();
+
+    res.json({ message: "Pago registrado", user });
+  } catch (error) {
+    res.status(500).json({ message: "Error al registrar pago" });
+  }
+};
+

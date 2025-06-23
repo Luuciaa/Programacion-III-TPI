@@ -1,22 +1,23 @@
-import { useRef, useState} from "react";
+import { useRef, useState, useContext} from "react";
 import { useNavigate} from "react-router-dom";
 import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from "jwt-decode";
 import {Form, FormGroup, Button, FormControl, Container } from "react-bootstrap";
+import AuthContext from "../../../context/AuthContext/AuthContext";
 import { toast } from "react-toastify";
 
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [area, setArea] = useState("");
   const [errors, setErrors] = useState({
     email: false,
     password: false,
-    area: false,
   });
   const [loginError, /*setLoginError*/] = useState("");
+  const { loginUser } = useContext(AuthContext);
+
 
   const navigate = useNavigate();
 
@@ -32,11 +33,6 @@ const Login = () => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
     setErrors({ ...errors, password: false });
-  };
-
-  const handleAreaChange = (event) => {
-    setArea(event.target.value);
-    setErrors({ ...errors, area: false });
   };
 
   const handleSubmit = async (event) => {
@@ -59,62 +55,55 @@ const Login = () => {
       return;
     }
 
-    //Validación <- Contraseña vacía o menor a 8 caracteres
-    if (!password.length || password.length < 8) {
+    // Validación contraseña vacía o menor a 6 caracteres
+    if (!password.trim() || password.length < 6) {
       setErrors({ ...errors, password: true });
-      toast.error("¡Password vacío o menor a 8 caracteres!");
+      toast.error("¡Contraseña vacía o menor a 6 caracteres!");
       passwordRef.current.focus();
-      return;
+      return; 
     }
 
-    //Validación <- Área no seleccionada
-    if (!area) {
-      setErrors({ ...errors, area: true });
-      toast.error("Por favor seleccioná un área");
-      return;
-    }
+    
 
     //Si todo esta bien, resetea errores
-    setErrors({ email: false, password: false, area: false });
+    setErrors({ email: false, password: false});
 
     try {
-      const res = await fetch("http://localhost:3000/api/auth/login", {
+      const res = await fetch("http://localhost:3000/api/auth/login",{
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, area }),
+        body: JSON.stringify({ email, password}),
       });
 
       const data = await res.json();
-      
+      console.log("Respuesta login:", data);
+
       if (res.ok) {
         const token = data.token;
 
         // Decodifica el token
+        loginUser(token);
+
         const decoded = jwtDecode(token);
-        const { rol } = decoded;
+        const { role } = decoded;
         toast.success("¡Inicio de sesión exitoso!");
-
         
-
-        // Guarda el token en localStorage
-        localStorage.setItem("token", token);
-
         //Redirecciono según el rol
-        if (rol === "superadmin") {
+        if (role === "superadmin") {
           navigate("/superAdmin");
-        } else if (rol === "admin") {
+        } else if (role === "admin") {
           navigate("/admin");
-        } else if (rol === "socio") {
-          navigate("/usuario");
+        } else if (role === "socio") {
+          navigate("/user");
         } else {
           toast.error("Rol no reconocido");
         }
       } else {
-        toast.error(data.message || "Error al iniciar sesión");
+        toast.error(data.message || "Error al Iniciar Sesión");
       }
     } catch (err) {
       console.log(err);
-      toast.error("Error al iniciar sesión. Verifique sus datos.");
+      toast.error("Error al Iniciar Sesión. Verifique sus datos.");
     }
   };
 
@@ -157,28 +146,7 @@ const Login = () => {
               />
               {errors.password && (
                 <p className="text-danger mt-2 mb-0">
-                  La contraseña debe tener 8 caracteres.
-                </p>
-              )}
-            </FormGroup>
-          </div>
-
-          <div>
-            <FormGroup className="mb-3">
-              <FormControl
-                as="select"
-                value={area}
-                onChange={handleAreaChange}
-                isInvalid={errors.area}
-              >
-                <option value=""> Seleccionar Área</option>
-                <option value="admin">Admin</option>
-                <option value="socio">Socio</option>
-                <option value="superAdmin">Super-Admin</option>
-              </FormControl>
-              {errors.area && (
-                <p className="text-danger mt-2 mb-0">
-                  Por favor seleccionar un área
+                  La contraseña debe tener 6 caracteres.
                 </p>
               )}
             </FormGroup>

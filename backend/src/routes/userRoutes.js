@@ -7,7 +7,8 @@ import {
   getUserById,
   updateUser,
   deleteUser,
-  changeUserRole
+  changeUserRole,
+  registrarPago
 } from "../services/userServices.js";
 
 // Middleware para proteger rutas
@@ -26,6 +27,8 @@ router.use(verifyToken);
 router.get("/", isAdmin, getAllUsers);
 
 router.get("/:id", getUserById);
+
+router.post("/:id/registrar-pago", isAdmin, registrarPago);
 
 router.put("/:id", updateUser);
 

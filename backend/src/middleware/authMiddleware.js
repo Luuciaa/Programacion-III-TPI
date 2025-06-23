@@ -13,6 +13,8 @@ export const verifyToken = (req, res, next) => {
   try {
     const payload = jwt.verify(token, SECRET_KEY);
     req.user = payload; // Guarda datos útiles (id, rol, email)
+    console.log(req.user.id, req.user.email, req.user.role);
+
     next();
   } catch (error) {
     return res.status(403).json({ message: "Token inválido o expirado" });

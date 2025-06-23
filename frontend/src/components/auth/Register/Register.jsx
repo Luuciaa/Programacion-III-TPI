@@ -32,10 +32,10 @@ const RegistroForm = () => {
     }  
     
 
-    
+    console.log('Datos enviados al backend: ', formData)
 
     try {
-      const res = await fetch("http://localhost:3000/api/auth/register", {
+      const res = await fetch("http://localhost:3000/api/auth/register",{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -71,9 +71,12 @@ const RegistroForm = () => {
 
   return (
     <div className="d-flex justify-content-center align-content-center vh-100">
-      <div id="container-register" className="border p-4 rounded shadow">
+      <div
+        style={{ width: "100%", maxWidth: 420 }}
+        className="p-4 border rounded shadow bg-white"
+      >
         <h2 className="text-center mb-4">Registro</h2>
-        
+
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Row className="mb-3">
             <div>
@@ -81,7 +84,7 @@ const RegistroForm = () => {
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control
                   required
-                  type="text"  
+                  type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
@@ -117,14 +120,14 @@ const RegistroForm = () => {
               <Form.Control
                 required
                 type="password"
-                name="password"  
+                name="password"
                 value={formData.password}
                 onChange={handleChange}
-                minLength={8}
+                minLength={6}
                 placeholder="Password"
               />
               <Form.Control.Feedback type="invalid">
-                La contraseña debe tener al menos 8 caracteres.
+                La contraseña debe tener al menos 6 caracteres.
               </Form.Control.Feedback>
             </Form.Group>
           </div>

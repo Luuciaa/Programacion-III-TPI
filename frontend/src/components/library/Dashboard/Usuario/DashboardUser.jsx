@@ -6,8 +6,8 @@ import { getColorCuota, getTextoCuota } from "../../../../utils/helpersAdmin";
 const DashboardUser = ({ usuario, actividadesHoy, proximaReserva }) => {
   const colorCuota = getColorCuota(usuario.estadoCuota);
   const textoCuota = getTextoCuota(usuario.estadoCuota);
-  const cantidadClasesHoy = actividadesHoy.length;
-  const notificacionesNuevas = usuario.notificaciones.length;
+  const cantidadClasesHoy = actividadesHoy?.length || 0;
+  const notificacionesNuevas = usuario?.notificaciones?.length || 0;
 
   return (
     <div className="container mt-4">

@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import SidebarUsuario from "../library/Dashboard/Usuario/SidebarUsuario";
+import SidebarUsuario from "../library/Dashboard/Usuario/SidebarUser";
 import NavBarUser from "./NavBarUser/NavBarUser";
 import Footer from "./Footer/Footer";
 
